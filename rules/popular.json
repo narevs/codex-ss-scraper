@@ -1,0 +1,16 @@
+{
+  "rule_name": "Popular",
+  "sites": [
+    "https://pubs.acs.org/",
+    "https://www.hindawi.com/",
+    "https://www.researchsquare.com/",
+    "https://academic.oup.com/",
+    "https://journals.sagepub.com/",
+    "https://www.cureus.com/",
+    "https://onlinelibrary.wiley.com/",
+    "https://www.tandfonline.com/",
+    "https://link.springer.com/",
+    "https://journals.plos.org/plosone/",
+    "https://www.sciencedirect.com/"
+  ]
+}
