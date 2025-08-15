@@ -35,6 +35,15 @@ basic link collection utilities.
      deduplicated, and a short scroll loop (≤8s) attempts to load more
      results politely.
 
+6. **Page-by-page scraping**
+   * The "Start" button visits each URL in the left list and extracts
+     `name`, `email`, `journal`, `topic`, verification flags and more.
+   * If a PDF link is advertised the scraper attempts to pull text; when
+     `USE_OCR=1` (default) an OCR pass via Tesseract is used as a fallback.
+   * MX record checks can be disabled with `CHECK_MX=0`.
+   * The right panel displays emails only while full records remain in
+     memory for export.
+
 ## Tests
 
 Run the test-suite:

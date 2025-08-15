@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import os
+import asyncio
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -10,6 +11,7 @@ from auth.license import LicenseManager, should_show_license_modal
 from dialogs import LoginDialog, AdminDialog
 from auth import users
 from utils import link_collector
+from services.page_runner import PageRunner
 
 DEFAULT_HOME = "https://www.google.com/"
 RULES_DIR = Path(__file__).parent / "rules"
@@ -48,10 +50,13 @@ class SSMainWindow(QMainWindow if QMainWindow else object):
         self.browser = QWebEngineView()
         self.browser.load(DEFAULT_HOME)
         self.scrape_btn = QPushButton("Scrape Links")
+        self.start_btn = QPushButton("Start")
         self.status_label = QLabel("")
         self.scrape_btn.clicked.connect(self.scrape_links)  # type: ignore[attr-defined]
+        self.start_btn.clicked.connect(self.start_processing)  # type: ignore[attr-defined]
         ctrl_layout = QHBoxLayout()
         ctrl_layout.addWidget(self.scrape_btn)
+        ctrl_layout.addWidget(self.start_btn)
         ctrl_layout.addWidget(self.status_label)
         ctrl_widget = QWidget()
         ctrl_widget.setLayout(ctrl_layout)
@@ -63,6 +68,7 @@ class SSMainWindow(QMainWindow if QMainWindow else object):
 
         # Right panel
         self.email_list = QListWidget()
+        self.records: list[dict] = []
 
         layout = QHBoxLayout()
         layout.addWidget(self.url_list)
@@ -106,6 +112,18 @@ class SSMainWindow(QMainWindow if QMainWindow else object):
         links = link_collector.collect_links(page_url, None, host, cap, update_status)
         if links:
             self.url_list.addItems(links)
+        self.scrape_btn.setEnabled(True)
+
+    def start_processing(self):  # pragma: no cover - GUI heavy
+        urls = [self.url_list.item(i).text() for i in range(self.url_list.count())]
+        if not urls:
+            return
+        self.start_btn.setEnabled(False)
+        self.scrape_btn.setEnabled(False)
+        runner = PageRunner(self.browser, self.email_list.addItem)
+        asyncio.run(runner.run_urls(urls))
+        self.records = runner.records
+        self.start_btn.setEnabled(True)
         self.scrape_btn.setEnabled(True)
 
 
