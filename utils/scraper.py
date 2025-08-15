@@ -31,12 +31,21 @@ def extract_from_dom(html: str, url: str) -> Dict:
     """Extract fields from page HTML."""
     soup = BeautifulSoup(html, "html.parser")
     text = soup.get_text(" ")
-    emails = {normalize_email(e) for e in EMAIL_RE.findall(text)}
+    emails: List[str] = []
+    seen: Set[str] = set()
     for a in soup.select('a[href^="mailto:"]'):
         href = a.get('href', '')
         addr = href.split(':', 1)[1].split('?')[0]
-        emails.add(normalize_email(addr))
-    first_email = next(iter(emails)) if emails else ""
+        norm = normalize_email(addr)
+        if norm not in seen:
+            emails.append(norm)
+            seen.add(norm)
+    for e in EMAIL_RE.findall(text):
+        norm = normalize_email(e)
+        if norm not in seen:
+            emails.append(norm)
+            seen.add(norm)
+    first_email = emails[0] if emails else ""
 
     name = ""
     meta = soup.find("meta", attrs={"name": "author"})
@@ -81,7 +90,7 @@ def extract_from_dom(html: str, url: str) -> Dict:
     return {
         "name": name,
         "email": first_email,
-        "emails": list(emails),
+        "emails": emails,
         "journal": journal,
         "topic": topic,
         "verified": False,

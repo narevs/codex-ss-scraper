@@ -11,7 +11,7 @@ from datetime import datetime
 from auth.license import LicenseManager, should_show_license_modal
 from dialogs import LoginDialog, AdminDialog
 from auth import users
-from utils import link_collector
+from utils import link_collector, html as html_utils
 from services.page_runner import PageRunner
 from services import exports, stats
 
@@ -51,7 +51,7 @@ class SSMainWindow(QMainWindow if QMainWindow else object):
 
         # Middle panel
         self.browser = QWebEngineView()
-        self.browser.load(DEFAULT_HOME)
+        self.browser.load(html_utils.to_qurl(DEFAULT_HOME))
         self.scrape_btn = QPushButton("Scrape Links")
         self.start_btn = QPushButton("Start")
         self.status_label = QLabel("")
