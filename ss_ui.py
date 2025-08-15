@@ -2,10 +2,12 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 from auth.license import LicenseManager, should_show_license_modal
-from dialogs import LoginDialog
+from dialogs import LoginDialog, AdminDialog
+from auth import users
 
 DEFAULT_HOME = "https://www.google.com/"
 RULES_DIR = Path(__file__).parent / "rules"
@@ -18,10 +20,13 @@ try:
         QMainWindow,
         QVBoxLayout,
         QWidget,
+        QShortcut,
     )
+    from PyQt6.QtGui import QKeySequence
     from PyQt6.QtWebEngineWidgets import QWebEngineView
 except Exception:  # pragma: no cover - allows import without Qt deps
-    QApplication = QMainWindow = QHBoxLayout = QVBoxLayout = QWidget = QListWidget = QWebEngineView = None
+    QApplication = QMainWindow = QHBoxLayout = QVBoxLayout = QWidget = QListWidget = QWebEngineView = QShortcut = object  # type: ignore
+    QKeySequence = None  # type: ignore
 
 
 class SSMainWindow(QMainWindow if QMainWindow else object):
@@ -57,6 +62,12 @@ class SSMainWindow(QMainWindow if QMainWindow else object):
 
         self.load_rules()
 
+        if os.getenv("ADMIN_MODE") == "1":
+            self._db_path = Path(__file__).parent / "data" / "auth.db"
+            users.init_db(self._db_path)
+            shortcut = QShortcut(QKeySequence("Ctrl+Alt+A"), self)
+            shortcut.activated.connect(self.open_admin_dialog)
+
     def load_rules(self):
         rule_path = RULES_DIR / "popular.json"
         if rule_path.exists():
@@ -64,6 +75,10 @@ class SSMainWindow(QMainWindow if QMainWindow else object):
             self.popular_sites = data.get("sites", [])
         else:
             self.popular_sites = []
+
+    def open_admin_dialog(self):  # pragma: no cover - GUI
+        dlg = AdminDialog(self._db_path, self)
+        dlg.exec()
 
 
 if __name__ == "__main__":

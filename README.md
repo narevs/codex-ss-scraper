@@ -22,6 +22,11 @@ basic link collection utilities.
    subsequent runs.  Delete this file to reset.  After verification the
    browser loads `https://www.google.com/`.
 
+4. **Admin mode**
+   * Set environment variable `ADMIN_MODE=1` to enable the Admin dialog.
+   * Press `Ctrl+Alt+A` in the main window to manage licensed users stored
+     in `data/auth.db`.  Back up this file to preserve user records.
+
 ## Tests
 
 Run the test-suite:
