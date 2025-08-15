@@ -1,0 +1,20 @@
+{
+  "rules": [
+    {
+      "name": "Popular",
+      "sites": [
+        {"name": "ScienceDirect", "url": "https://www.sciencedirect.com"},
+        {"name": "Springer", "url": "https://link.springer.com"},
+        {"name": "Wiley", "url": "https://onlinelibrary.wiley.com"},
+        {"name": "Taylor & Francis", "url": "https://www.tandfonline.com"},
+        {"name": "PLOS ONE", "url": "https://journals.plos.org/plosone"},
+        {"name": "SAGE Journals", "url": "https://journals.sagepub.com"},
+        {"name": "Oxford Academic", "url": "https://academic.oup.com"},
+        {"name": "Research Square", "url": "https://www.researchsquare.com"},
+        {"name": "Hindawi", "url": "https://www.hindawi.com"},
+        {"name": "ACS Publications", "url": "https://pubs.acs.org"},
+        {"name": "Cureus", "url": "https://www.cureus.com"}
+      ]
+    }
+  ]
+}

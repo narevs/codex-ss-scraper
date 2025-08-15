@@ -1,0 +1,11 @@
+ScienceDirect: dynamic; "Corresponding author" often JS-revealed
+Springer: envelope icon; Author information; sometimes obfuscated
+Wiley: Author Information tab; dynamic tabs
+Taylor & Francis: Authors section; aria-label 'Email'; emails may be hidden
+PLOS ONE: open; mailto in author list common
+SAGE Journals: Corresponding author note; dynamic load
+Oxford Academic: Corresponding author visible; lazy content
+Research Square: preprints; "Corresponding author email"; may have Cloudflare
+Hindawi: Correspondence section; sometimes image/obfuscated
+ACS Publications: Corresponding Author email often JS-masked
+Cureus: author pages; email sometimes absent; ‘Corresponding author’ string
