@@ -1,0 +1,71 @@
+{
+  "rule_name": "Popular",
+  "sites": [
+    {
+      "name": "ACS Publications",
+      "host_allowlist": ["pubs.acs.org"],
+      "search_url": "https://pubs.acs.org/action/doSearch?AllField={query}",
+      "journal_url": "https://pubs.acs.org/"
+    },
+    {
+      "name": "Hindawi",
+      "host_allowlist": ["www.hindawi.com"],
+      "search_url": "https://www.hindawi.com/search/all/?q={query}",
+      "journal_url": "https://www.hindawi.com/"
+    },
+    {
+      "name": "Research Square",
+      "host_allowlist": ["www.researchsquare.com"],
+      "search_url": "https://www.researchsquare.com/search?query={query}",
+      "journal_url": "https://www.researchsquare.com/"
+    },
+    {
+      "name": "Oxford Academic",
+      "host_allowlist": ["academic.oup.com"],
+      "search_url": "https://academic.oup.com/journals/search-results?q={query}",
+      "journal_url": "https://academic.oup.com/"
+    },
+    {
+      "name": "SAGE Journals",
+      "host_allowlist": ["journals.sagepub.com"],
+      "search_url": "https://journals.sagepub.com/action/doSearch?AllField={query}",
+      "journal_url": "https://journals.sagepub.com/"
+    },
+    {
+      "name": "Cureus",
+      "host_allowlist": ["www.cureus.com"],
+      "search_url": "https://www.cureus.com/search?query={query}",
+      "journal_url": "https://www.cureus.com/"
+    },
+    {
+      "name": "Wiley Online Library",
+      "host_allowlist": ["onlinelibrary.wiley.com"],
+      "search_url": "https://onlinelibrary.wiley.com/action/doSearch?AllField={query}",
+      "journal_url": "https://onlinelibrary.wiley.com/"
+    },
+    {
+      "name": "Taylor & Francis Online",
+      "host_allowlist": ["www.tandfonline.com"],
+      "search_url": "https://www.tandfonline.com/action/doSearch?AllField={query}",
+      "journal_url": "https://www.tandfonline.com/"
+    },
+    {
+      "name": "SpringerLink",
+      "host_allowlist": ["link.springer.com"],
+      "search_url": "https://link.springer.com/search?query={query}",
+      "journal_url": "https://link.springer.com/"
+    },
+    {
+      "name": "PLOS ONE",
+      "host_allowlist": ["journals.plos.org"],
+      "search_url": "https://journals.plos.org/plosone/search?q={query}",
+      "journal_url": "https://journals.plos.org/plosone/"
+    },
+    {
+      "name": "ScienceDirect",
+      "host_allowlist": ["www.sciencedirect.com"],
+      "search_url": "https://www.sciencedirect.com/search?qs={query}",
+      "journal_url": "https://www.sciencedirect.com/"
+    }
+  ]
+}
