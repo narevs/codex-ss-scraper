@@ -2,16 +2,12 @@ from __future__ import annotations
 
 from urllib.parse import urljoin
 
-try:  # pragma: no cover - optional Qt dependency
-    from PyQt6.QtCore import QEventLoop, QUrl
-except Exception:  # pragma: no cover
-    QEventLoop = None  # type: ignore
-    QUrl = None  # type: ignore
+from PyQt6.QtCore import QEventLoop, QUrl
 
 
-def to_qurl(url: str):
+def to_qurl(url: str) -> QUrl:
     """Return a :class:`QUrl` from user input."""
-    return QUrl.fromUserInput(url) if QUrl else None
+    return QUrl.fromUserInput(url)
 
 
 def get_inner_html(view) -> str:  # pragma: no cover - GUI helper
@@ -27,7 +23,7 @@ def get_inner_html(view) -> str:  # pragma: no cover - GUI helper
 
 
 def load_html(view, url: str) -> str:  # pragma: no cover - GUI helper
-    if not view or not QEventLoop or not QUrl:
+    if not view or not QEventLoop:
         return ""
     loop = QEventLoop()
     view.load(to_qurl(url))
