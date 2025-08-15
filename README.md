@@ -1,2 +1,49 @@
 # Codex SS Scraper
-This repo will be used with ChatGPT Codex tasks.
+
+Minimal MVP of a 3‑panel desktop scraper used for Codex tasks.  The
+application verifies a license key before showing the UI and ships with
+basic link collection utilities.
+
+## Setup
+
+1. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. **Provide RSA public key**
+   * Create `.env` with `PUBLIC_KEY_PEM` or place a PEM file at
+     `keys/public_key.pem`.
+3. **Run the application**
+   ```bash
+   python ss_ui.py
+   ```
+   The browser loads `https://www.google.com/` on startup.
+
+## Tests
+
+Run the test-suite:
+```bash
+pytest -q
+```
+
+## Building a Windows executable
+
+A PyInstaller spec is provided.  From Windows run:
+```cmd
+build_win.bat
+```
+This generates a single-file executable in the `dist/` directory.  Qt
+WebEngine resources are bundled automatically.  Tesseract is optional –
+set `USE_OCR=1` to enable if installed.
+
+## Troubleshooting
+
+* **QtWebEngine** – In headless environments set
+  `QT_QPA_PLATFORM=offscreen`.
+* **Tesseract** – The OCR step is skipped if Tesseract is not available;
+  install separately when needed.
+
+## Etiquette
+
+The scraper is a proof of concept.  Respect robots.txt and rate limits
+when scraping public websites.
