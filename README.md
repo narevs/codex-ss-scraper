@@ -40,9 +40,18 @@ basic link collection utilities.
      `name`, `email`, `journal`, `topic`, verification flags and more.
    * If a PDF link is advertised the scraper attempts to pull text; when
      `USE_OCR=1` (default) an OCR pass via Tesseract is used as a fallback.
-   * MX record checks can be disabled with `CHECK_MX=0`.
-   * The right panel displays emails only while full records remain in
-     memory for export.
+ * MX record checks can be disabled with `CHECK_MX=0`.
+ * The right panel displays emails only while full records remain in
+    memory for export.
+
+7. **Data options & statistics**
+  * Buttons in the right panel allow exporting all collected fields to
+    CSV or Excel, copying the CSV text to the clipboard, or clearing the
+    current session.
+  * Stats underneath show counts for data items and pages visited,
+    tracked for the current day and for the full session.  Daily counters
+    reset automatically at midnight while session totals persist until
+    cleared.
 
 ## Tests
 

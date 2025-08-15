@@ -6,12 +6,14 @@ import os
 import asyncio
 from pathlib import Path
 from urllib.parse import urlparse
+from datetime import datetime
 
 from auth.license import LicenseManager, should_show_license_modal
 from dialogs import LoginDialog, AdminDialog
 from auth import users
 from utils import link_collector
 from services.page_runner import PageRunner
+from services import exports, stats
 
 DEFAULT_HOME = "https://www.google.com/"
 RULES_DIR = Path(__file__).parent / "rules"
@@ -27,6 +29,7 @@ try:
         QVBoxLayout,
         QWidget,
         QShortcut,
+        QFileDialog,
     )
     from PyQt6.QtGui import QKeySequence
     from PyQt6.QtWebEngineWidgets import QWebEngineView
@@ -69,15 +72,47 @@ class SSMainWindow(QMainWindow if QMainWindow else object):
         # Right panel
         self.email_list = QListWidget()
         self.records: list[dict] = []
+        self.export_csv_btn = QPushButton("Export CSV")
+        self.export_excel_btn = QPushButton("Export Excel")
+        self.copy_btn = QPushButton("Copy")
+        self.clear_btn = QPushButton("Clear")
+        self.export_csv_btn.clicked.connect(self.export_csv)  # type: ignore[attr-defined]
+        self.export_excel_btn.clicked.connect(self.export_excel)  # type: ignore[attr-defined]
+        self.copy_btn.clicked.connect(self.copy_records)  # type: ignore[attr-defined]
+        self.clear_btn.clicked.connect(self.clear_records)  # type: ignore[attr-defined]
+        opts_layout = QHBoxLayout()
+        opts_layout.addWidget(self.export_csv_btn)
+        opts_layout.addWidget(self.export_excel_btn)
+        opts_layout.addWidget(self.copy_btn)
+        opts_layout.addWidget(self.clear_btn)
+        opts_widget = QWidget()
+        opts_widget.setLayout(opts_layout)
+        self.data_stats = QLabel("Data: Today 0 / Session 0")
+        self.pages_stats = QLabel("Pages: Today 0 / Session 0")
+        stats_layout = QVBoxLayout()
+        stats_layout.addWidget(self.data_stats)
+        stats_layout.addWidget(self.pages_stats)
+        stats_widget = QWidget()
+        stats_widget.setLayout(stats_layout)
+        right_layout = QVBoxLayout()
+        right_layout.addWidget(self.email_list)
+        right_layout.addWidget(opts_widget)
+        right_layout.addWidget(stats_widget)
+        right_widget = QWidget()
+        right_widget.setLayout(right_layout)
 
         layout = QHBoxLayout()
         layout.addWidget(self.url_list)
         layout.addWidget(middle_widget)
-        layout.addWidget(self.email_list)
+        layout.addWidget(right_widget)
 
         central = QWidget()
         central.setLayout(layout)
         self.setCentralWidget(central)
+
+        self.stats = stats.StatsManager(Path(__file__).parent / "data" / "state.json")
+        self.stats.ensure_today_date()
+        self.update_stats_labels()
 
         self.load_rules()
 
@@ -86,6 +121,51 @@ class SSMainWindow(QMainWindow if QMainWindow else object):
             users.init_db(self._db_path)
             shortcut = QShortcut(QKeySequence("Ctrl+Alt+A"), self)
             shortcut.activated.connect(self.open_admin_dialog)
+
+    def update_stats_labels(self):
+        self.data_stats.setText(
+            f"Data: Today {self.stats.data_today} / Session {self.stats.data_session}"
+        )
+        self.pages_stats.setText(
+            f"Pages: Today {self.stats.pages_today} / Session {self.stats.pages_session}"
+        )
+
+    def export_csv(self):  # pragma: no cover - GUI
+        if not self.records:
+            return
+        default = f"export_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+        path, _ = QFileDialog.getSaveFileName(self, "Export CSV", default, "CSV Files (*.csv)")
+        if not path:
+            return
+        try:
+            csv_text = exports.to_csv(self.records)
+            Path(path).write_text(csv_text, encoding="utf-8")
+        except Exception:
+            pass
+
+    def export_excel(self):  # pragma: no cover - GUI
+        if not self.records:
+            return
+        default = f"export_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+        path, _ = QFileDialog.getSaveFileName(self, "Export Excel", default, "Excel Files (*.xlsx)")
+        if not path:
+            return
+        try:
+            exports.to_excel_file(self.records, path)
+        except Exception:
+            pass
+
+    def copy_records(self):  # pragma: no cover - GUI
+        if not self.records:
+            return
+        csv_text = exports.to_csv(self.records)
+        QApplication.clipboard().setText(csv_text)
+
+    def clear_records(self):  # pragma: no cover - GUI
+        self.records.clear()
+        self.email_list.clear()
+        self.stats.reset_session()
+        self.update_stats_labels()
 
     def load_rules(self):
         rule_path = RULES_DIR / "popular.json"
@@ -120,9 +200,15 @@ class SSMainWindow(QMainWindow if QMainWindow else object):
             return
         self.start_btn.setEnabled(False)
         self.scrape_btn.setEnabled(False)
-        runner = PageRunner(self.browser, self.email_list.addItem)
+        runner = PageRunner(
+            self.browser,
+            self.email_list.addItem,
+            stats_manager=self.stats,
+            stats_callback=self.update_stats_labels,
+        )
         asyncio.run(runner.run_urls(urls))
         self.records = runner.records
+        self.update_stats_labels()
         self.start_btn.setEnabled(True)
         self.scrape_btn.setEnabled(True)
 

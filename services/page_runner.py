@@ -12,9 +12,17 @@ from utils import html as html_utils, normalize, scraper
 class PageRunner:
     """Process URLs page by page using a ``QWebEngineView``."""
 
-    def __init__(self, view, email_callback: Callable[[str], None] | None = None):
+    def __init__(
+        self,
+        view,
+        email_callback: Callable[[str], None] | None = None,
+        stats_manager=None,
+        stats_callback: Callable[[], None] | None = None,
+    ):
         self.view = view
         self.email_callback = email_callback
+        self.stats = stats_manager
+        self.stats_callback = stats_callback
         self.seen_emails: set[str] = set()
         self.records: List[dict] = []
 
@@ -27,6 +35,10 @@ class PageRunner:
         session_timeout = aiohttp.ClientTimeout(total=timeout)
         async with aiohttp.ClientSession(timeout=session_timeout) as session:
             for url in urls[:limit]:
+                if self.stats:
+                    self.stats.increment_pages()
+                    if self.stats_callback:
+                        self.stats_callback()
                 html = html_utils.load_html(self.view, url)
                 record = scraper.extract_from_dom(html, url)
                 pdf_url = scraper.maybe_follow_pdf(html, url)
@@ -57,6 +69,10 @@ class PageRunner:
                     record["duplicate"] = email in self.seen_emails
                     if not record["duplicate"]:
                         self.seen_emails.add(email)
+                        if self.stats:
+                            self.stats.increment_data()
+                            if self.stats_callback:
+                                self.stats_callback()
                     if check_mx:
                         domain = email.split("@")[-1]
                         record["verified"] = scraper.mx_has_records(domain)
