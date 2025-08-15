@@ -27,6 +27,14 @@ basic link collection utilities.
    * Press `Ctrl+Alt+A` in the main window to manage licensed users stored
      in `data/auth.db`.  Back up this file to preserve user records.
 
+5. **Link collection**
+   * The "Scrape Links" button uses per-site plugins defined in
+     `sites/plugins.py` with a generic fallback to extract article-style
+     anchors.
+   * URLs are normalized (fragments and tracking params removed),
+     deduplicated, and a short scroll loop (≤8s) attempts to load more
+     results politely.
+
 ## Tests
 
 Run the test-suite:
