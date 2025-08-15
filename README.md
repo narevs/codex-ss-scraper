@@ -62,20 +62,33 @@ pytest -q
 
 ## Building a Windows executable
 
-A PyInstaller spec is provided.  From Windows run:
+A PyInstaller spec (`ss_scraper.spec`) and helper script (`build_win.bat`)
+are included.  On a Windows machine with Python and PyInstaller
+installed, run:
+
 ```cmd
 build_win.bat
 ```
-This generates a single-file executable in the `dist/` directory.  Qt
-WebEngine resources are bundled automatically.  Tesseract is optional –
-set `USE_OCR=1` to enable if installed.
+
+The script produces a **single-file** `ss_scraper.exe` in the `dist/`
+folder.  The spec automatically collects the required QtWebEngine
+assets, including `QtWebEngineProcess.exe`, resources, translations, and
+standard Qt plugins.
+
+Tesseract/OCR support is optional; set `USE_OCR=1` when launching the
+app if you have Tesseract installed.  The build does not bundle the
+Tesseract binary.
 
 ## Troubleshooting
 
-* **QtWebEngine** – In headless environments set
-  `QT_QPA_PLATFORM=offscreen`.
-* **Tesseract** – The OCR step is skipped if Tesseract is not available;
-  install separately when needed.
+* **QtWebEngine missing assets** – ensure the spec and build script are
+  used; they copy the `QtWebEngineProcess.exe`, `resources/`,
+  `translations/`, and common plugins.
+* **QtWebEngine in headless builds** – set
+  `QT_QPA_PLATFORM=offscreen` when running tests or executing on a server
+  without a display.
+* **Tesseract** – OCR is skipped if the Tesseract binary is not found.
+  Install it separately if you need OCR functionality.
 
 ## Etiquette
 
