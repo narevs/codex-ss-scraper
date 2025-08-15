@@ -1,0 +1,26 @@
+# env & secrets
+.env
+keys/private_key.pem
+
+# local data & caches
+data/
+*.db
+logs/
+scraper.log
+__pycache__/
+*.pyc
+.pytest_cache/
+.playwright/
+.cache/
+.venv/
+
+# build artifacts
+dist/
+build/
+*.spec
+
+# OS / IDE noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
