@@ -42,6 +42,17 @@ def _default_config_path() -> Path:
     return Path(appdata) / CONFIG_DIRNAME / CONFIG_FILENAME
 
 
+def should_show_license_modal(config_path: Path) -> bool:
+    """Return True when the license dialog should be shown.
+
+    The modal is required on first run or when the persisted license has
+    expired.  A missing or malformed config file is treated as needing the
+    modal as well.
+    """
+    lm = LicenseManager(config_path)
+    return not lm.is_license_valid()
+
+
 def load_public_key(pem: Optional[str] = None) -> Tuple[int, int]:
     """Load RSA public key numbers (n, e).
 

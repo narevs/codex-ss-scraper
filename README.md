@@ -17,7 +17,10 @@ basic link collection utilities.
    ```bash
    python ss_ui.py
    ```
-   The browser loads `https://www.google.com/` on startup.
+   On first launch a license dialog prompts for email and key.  A valid
+   license is stored at `%APPDATA%/SSScraper/config.json` and reused on
+   subsequent runs.  Delete this file to reset.  After verification the
+   browser loads `https://www.google.com/`.
 
 ## Tests
 

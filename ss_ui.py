@@ -4,6 +4,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from auth.license import LicenseManager, should_show_license_modal
+from dialogs import LoginDialog
+
 DEFAULT_HOME = "https://www.google.com/"
 RULES_DIR = Path(__file__).parent / "rules"
 
@@ -67,6 +70,12 @@ if __name__ == "__main__":
     import sys
 
     app = QApplication(sys.argv)
+    lm = LicenseManager()
+    if should_show_license_modal(lm.config_path):
+        dlg = LoginDialog(lm)
+        if dlg.exec() != 1:  # QDialog.Accepted
+            sys.exit(0)
+
     win = SSMainWindow()
     win.show()
     sys.exit(app.exec())
