@@ -1,0 +1,17 @@
+PyQt6
+PyQt6-Qt6
+PyQt6-WebEngine
+beautifulsoup4
+aiohttp
+aiosqlite
+tqdm
+openpyxl
+pytesseract
+Pillow
+pymupdf
+python-docx
+dnspython
+python-dotenv
+playwright
+pytest
+pyinstaller
