@@ -1,16 +1,82 @@
 {
   "rule_name": "Popular",
   "sites": [
-    "https://pubs.acs.org/",
-    "https://www.hindawi.com/",
-    "https://www.researchsquare.com/",
-    "https://academic.oup.com/",
-    "https://journals.sagepub.com/",
-    "https://www.cureus.com/",
-    "https://onlinelibrary.wiley.com/",
-    "https://www.tandfonline.com/",
-    "https://link.springer.com/",
-    "https://journals.plos.org/plosone/",
-    "https://www.sciencedirect.com/"
+    {
+      "label": "ACS Publications",
+      "host": "pubs.acs.org",
+      "base_url": "https://pubs.acs.org/",
+      "search_url_template": "https://pubs.acs.org/action/doSearch?AllField={q}",
+      "notes": ""
+    },
+    {
+      "label": "Hindawi",
+      "host": "www.hindawi.com",
+      "base_url": "https://www.hindawi.com/",
+      "search_url_template": "https://www.hindawi.com/search/all/?query={q}",
+      "notes": ""
+    },
+    {
+      "label": "Research Square",
+      "host": "www.researchsquare.com",
+      "base_url": "https://www.researchsquare.com/",
+      "search_url_template": "https://www.researchsquare.com/search?query={q}",
+      "notes": ""
+    },
+    {
+      "label": "Oxford Academic",
+      "host": "academic.oup.com",
+      "base_url": "https://academic.oup.com/",
+      "search_url_template": "https://academic.oup.com/search-results?q={q}",
+      "notes": ""
+    },
+    {
+      "label": "SAGE Journals",
+      "host": "journals.sagepub.com",
+      "base_url": "https://journals.sagepub.com/",
+      "search_url_template": "https://journals.sagepub.com/action/doSearch?AllField={q}",
+      "notes": ""
+    },
+    {
+      "label": "Cureus",
+      "host": "www.cureus.com",
+      "base_url": "https://www.cureus.com/",
+      "search_url_template": "https://www.cureus.com/search?q={q}",
+      "notes": ""
+    },
+    {
+      "label": "Wiley Online Library",
+      "host": "onlinelibrary.wiley.com",
+      "base_url": "https://onlinelibrary.wiley.com/",
+      "search_url_template": "https://onlinelibrary.wiley.com/action/doSearch?AllField={q}",
+      "notes": "Use homepage by default; search on demand."
+    },
+    {
+      "label": "Taylor & Francis",
+      "host": "www.tandfonline.com",
+      "base_url": "https://www.tandfonline.com/",
+      "search_url_template": "https://www.tandfonline.com/action/doSearch?AllField={q}",
+      "notes": "Use homepage by default; search on demand."
+    },
+    {
+      "label": "SpringerLink",
+      "host": "link.springer.com",
+      "base_url": "https://link.springer.com/",
+      "search_url_template": "https://link.springer.com/search?query={q}",
+      "notes": "Use homepage by default; search on demand."
+    },
+    {
+      "label": "PLOS ONE",
+      "host": "journals.plos.org",
+      "base_url": "https://journals.plos.org/plosone/",
+      "search_url_template": "https://journals.plos.org/plosone/search?q={q}",
+      "notes": ""
+    },
+    {
+      "label": "ScienceDirect",
+      "host": "www.sciencedirect.com",
+      "base_url": "https://www.sciencedirect.com/",
+      "search_url_template": "",
+      "notes": "Browse: https://www.sciencedirect.com/browse/journals-and-books"
+    }
   ]
 }
